@@ -1,0 +1,26 @@
+<title></title>
+<link href="//dpidudyah7i0b.cloudfront.net/devops/plugins/bootstrap/bootstrap.css" rel="stylesheet">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://bootsnipp.com/dist/bootsnipp.min.css">
+<!--    <link rel="stylesheet" href="//d2d3qesrx8xj6s.cloudfront.net/dist/bootsnipp.min.css?ver=872ccd9c6dce18ce6ea4d5106540f089">-->
+<link rel="stylesheet" href="/dist/bootsnipp.min.css">
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<?php
+
+    foreach ( (isset($css_includes) ? $css_includes : array()) as $value) 
+    {
+        echo sprintf("<link rel='stylesheet' href='%s' />", $value);
+    }
+
+?>
+<style type="text/css">
+    .bs-glyphicons {
+        list-style: none;
+    }
+    
+    .bs-glyphicons li {
+        float: left;
+        line-height: 20px;
+    }
+</style>

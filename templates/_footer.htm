@@ -1,0 +1,26 @@
+<footer class="bs-footer" role="contentinfo">
+    <div class="container">
+        <div class="bs-social">
+        </div>
+       
+    </div>
+    <style>
+    ._fancybar {
+        margin-top: 50px !important;
+        z-index: 5
+    }
+    </style>
+    <script async type="text/javascript" src="//cdn.fancybar.net/ac/fancybar.js?zoneid=1502&serve=C6ADVKE&placement=danstools" id="_fancybar_js"></script>
+</footer>
+
+<script src="/dist/scripts.min.js"></script>
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.1/underscore-min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script> 
+<!-- footer -->
+<?php
+        foreach( (isset($js_includes) ? $js_includes: array()) as $value)
+        {
+            echo sprintf("<script src='%s'></script>", $value);
+        }
+?>

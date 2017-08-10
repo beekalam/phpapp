@@ -1,0 +1,202 @@
+<style>
+	.linedwrap {
+			border: 1px solid #c0c0c0;
+			width:100% !important;
+		}
+
+		.linedtextarea {
+			padding: 0px;
+			margin: 0px;
+		}
+
+		.linedtextarea textarea, .linedwrap .codelines .lineno {
+			font-size: 10pt;
+			font-family: monospace;
+			line-height: normal !important;
+		}
+
+		.linedtextarea textarea {
+			padding-right:0.3em;
+			padding-top:0.3em;
+			border: 0;
+		}
+
+		.linedwrap .lines {
+			margin-top: 0px;
+			float: left;
+			overflow: hidden;
+			border-right: 1px solid #c0c0c0;
+			margin-right: 5px;
+		}
+
+		.linedwrap .codelines {
+			padding-top: 5px;
+			width:100%;
+		}
+
+		.linedwrap .codelines .lineno {
+			color:#AAAAAA;
+			padding-right: 0.5em;
+			padding-top: 0.0em;
+			text-align: right;
+			white-space: nowrap;
+			width:100%;
+		}
+		.linedwrap .codelines .lineno:nth-child(odd) {
+			background:#eee;
+		}
+</style>
+<div class="row" style="padding-left:10px;padding-right:10px;padding-top:50px;">
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 col-xl-5">
+					<div class="linedtextarea">
+					   <textarea 
+					   		class="codearea scrollbars" 
+					   		wrap="off" 
+					   		style="resize: none; width: 100%;height:300px;"
+					   		id="input-area"></textarea>
+					</div>
+			</div>
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-2 col-xl-2">
+				<div class="row">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+							<select id="delimtype-from">
+								<option value=",">,</option>
+								<option value=";">;</option>
+								<option value="|">|</option>
+								<option value="space">spaces</option>
+								<option value="newline">newline</option>
+							</select>	
+
+							<select id="delimtype-to">
+								<option value=",">,</option>
+								<option value=";">;</option>
+								<option value="|">|</option>
+								<option value="space">spaces</option>
+								<option value="newline">newline</option>
+							</select>	
+
+						<br/>
+						<button id="delimit-input" class="btn btn-primary"> >>>>>> </button><br/>
+						<!-- <button id="commify">"new line" ===> ","</button><br/> -->
+						<button id="clear" class="btn btn-primary">clear</button><br/>
+						<button id="copy-back-to-input" class="btn btn-primary"><<<<<<<<</button><br/>
+					</div>				
+				</div>			
+			</div>
+
+			<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 col-xl-5">
+					<div class="linedtextarea">
+						<textarea class="codearea scrollbars" 
+							wrap="off" 
+							id="out-area"
+							style="resize: none; width: 100%;height:300px;">
+						</textarea>
+					</div>
+			</div>
+			<script>
+				$(document).ready(function()
+				{
+					 $(".codearea").linedtextarea();
+
+					  $("#delimit-input").click(function()
+					  {
+					  	var from = $("#delimtype-from").val();
+					  	var to = $("#delimtype-to").val();
+					  	$("#out-area").empty();
+				
+					  	process_text({
+					  	 		"operation":"replace",
+					  	 		"from": from,
+					  	 		"to": to,
+					  	 		"data": $("#input-area").val(),
+					  	 		"then": function(data)
+							  	 {
+							  	 	data  = JSON.parse(data);
+							  	 	if (data["success"])
+							        {
+							        	$("#out-area").val(data["data"]);
+							        }else
+							        {
+										$("#out-area").val('error');
+							        }
+							  	}
+							});
+					  	});
+
+
+					  // $("#commify").click(function()
+					  // {
+							// process_text("commify", $("#input-area").val(),function(data)
+						 //  	{
+						 //  	 	data  = JSON.parse(data);
+						 //  	 	if (data["success"])
+						 //        {
+						 //        	$("#output-area").val(data["data"]);
+						 //        }else
+						 //        {
+							// 		$("#output-area").val('error');
+						 //        }
+						 //  	 });
+					  // });
+
+					  $("#clear").click(function()
+					  {
+					  	$("#input-area").val("");
+					  	$("#out-area").val("");
+					  });
+
+					  $("#copy-back-to-input").click(function()
+					  {
+					  	$("#input-area").val("");
+					  	$("#input-area").val($("#out-area").val());
+					  	$("#out-area").val("");
+					  });
+
+				});
+
+				// function process_text(operation,data,then) 
+				function process_text(options)
+				{
+						var data 		= options["data"] || "";
+						var operation 	= options["operation"] || "";
+
+					  	var to_send = {};
+					  	var ret = '';
+				  		to_send["data"] = data;
+				  		to_send["from"] = options["from"] || "";
+				  		to_send["to"] = options["to"] || "";
+
+				  		if(options["to"] == "newline")
+				  		{
+				  			to_send["to"] ="\n";
+				  		}
+
+				  		if(options["to"] == 'space')
+				  		{
+				  			to_send["to"] = " ";
+				  		}
+
+						if(options["from"] == 'space')
+				  		{
+				  			to_send["from"] = " ";
+				  		}
+
+				  		if(options["from"] == "newline")
+				  		{
+				  			to_send["from"] ="\n";
+				  		}
+
+					  	var ret = $.ajax({
+					        url: "<?php echo $BASE; ?>" + "/text-process/" + operation,
+					        type: 'GET',
+					        cache: false,
+					        data: to_send
+					   	}).done(function(data) {
+					        options["then"](data);
+					    });	
+					    return ret;
+				}
+
+			</script>
+</div>

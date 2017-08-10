@@ -1,0 +1,18 @@
+<html>
+
+<head>
+    <?php echo view::instance()->render("templates/_header.htm"); ?>
+</head>
+
+<body>
+    <?php echo view::instance()->render("templates/_nav.htm"); ?>
+    <div class="container">
+        <div class="row">
+              <?php echo view::instance()->render($content); ?>
+        </div>
+    </div>
+    </div>
+    <?php echo view::instance()->render('templates/_footer.htm'); ?>
+</body>
+
+</html>

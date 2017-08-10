@@ -1,0 +1,15 @@
+<html>
+    <head>
+		<title>page title</title>
+    </head>
+    <body>
+        <hr/>
+        {% for item in links %}
+			<a href='{{ item }}'>{{ item }}</a>
+			<hr/>
+		{% endfor %}
+		
+		<hr/>
+    </body>
+</html>
+
