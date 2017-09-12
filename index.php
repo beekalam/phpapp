@@ -85,46 +85,9 @@ $app->route("GET /index",function($app)
 //region GET /home
 $app->route("GET /home", function($app)
 {
-	$links = [
-		  "/test/index",
-		 "/test/home",
-		 "/test/valid-mcode",
-		 "/xbs",
-		 "/xbs-res",
-		 "http://crm5.farahoosh.ir/XBS2",
-		 "http://crm.farahoosh.ir/XBS2",
-		 "http://crm.farahoosh.ir/AAA",
-		 "http://crm5.farahoosh.ir/AAA",
-		 "http://crm5.farahoosh.ir/AAA2/",
-		 "http://crm.farahoosh.ir/AAA2/",
-		 "http://crm.farahoosh.ir/AAA2/tail",
-		 "http://crm.farahoosh.ir/AAA2/xbstail",
-		 "http://crm5.farahoosh.ir/AAA3/",
-		 "http://crm.farahoosh.ir/AAA3/",
-		 "http://crm.farahoosh.ir/AAA3/tail",
-		 "/uplon/uplon-org/themeforest-16607656-uplon-responsive-bootstrap-4-web-app-kit/Admin/PHP/",
-		 "http://crm5.farahoosh.ir/AAA2/userinfo/120625",
-		 "http://crm5.farahoosh.ir/AAA2/userinfo/105157",
-		 "http://crm.farahoosh.ir/AAA2/userinfo/122910",
-		 "http://crm5.farahoosh.ir/AAA2/userinfo/106301",
-		 "http://crm.farahoosh.ir/AAA2/userinfo/69623",
-		 "http://crm5.farahoosh.ir/AAA2/userinfo/86967",
-		 "http://crm5.farahoosh.ir/AAA2/package-manager/11932",
-		 "/toothpaste/",
-		 "http://crm5.farahoosh.ir/AAA2/tail",
-		 "http://crm5.farahoosh.ir/AAA2/xbstail",
-		 "http://24.farahoosh.ir",
-          "http://94.74.128.19/XBS/admin",
-          "http://crm19.farahoosh.ir/AAA3/packagelistl",
-		 "/smartadmin1.5.2",
-		 "/bek/index.html",
-		 "/test/base64-encode-decode",
-		 'http://www.tabnak.ir/fa/news/339296/%D8%A7%D8%B3%D9%86%D8%A7%D8%AF-%DA%A9%D9%88%D8%AF%D8%AA%D8%A7%DB%8C-28-%D9%85%D8%B1%D8%AF%D8%A7%D8%AF-%D8%A7%D9%88%D9%84%DB%8C%D9%86-%D8%A8%D8%A7%D8%B1-%D8%AF%D8%B1-%D8%AA%D8%A7%D8%A8%D9%86%D8%A7%DA%A9-%D9%85%D9%86%D8%AA%D8%B4%D8%B1-%D8%B4%D8%AF-%D9%81%D8%A7%DB%8C%D9%84-%D8%A7%D8%B3%D9%86%D8%A7%D8%AF'
-          ,
-          'ftp://192.168.1.100:3721/'
-	];
-	
-		
+    $links = [];
+	//md5( 'someaps"  . date('H')
+
 	// echo $app->get("twig")->render('home.html', array('links' => $links, 'hive' => $app->hive()));
 	$app->set("links", $links);
 	$app->set("content", "templates/_links.htm");
@@ -135,17 +98,17 @@ $app->route("GET /home", function($app)
 //region GET /valid-mcode
 $app->route("GET /valid-mcode",function($app)
 {
-	
+
 	function ab_mc($vmc)
 	{
 			 $mc = $vmc;
-			
+
 			if( 10 != strlen($mc) )
 				return false;
 			if("1111111111" == $mc||"0000000000"== $mc||"2222222222"== $mc||"3333333333"== $mc||"4444444444"== $mc|| 
 				"5555555555"== $mc||"6666666666"== $mc||"7777777777"== $mc||"8888888888"== $mc||"9999999999"== $mc)
 				return false;
-				
+
 				$c = intval($mc[9]);
 				$n = 10 * intval($mc[0]) +
 					 9 * intval($mc[1] ) + 
@@ -156,12 +119,12 @@ $app->route("GET /valid-mcode",function($app)
 					 4 * intval($mc[6] ) + 
 					 3 * intval($mc[7] ) +
 					 2 * intval($mc[8] ) ;
-							   
+
 				$r= $n - 11 * intval($n/11);
-				
+
 				if( (0==$r && $r==$c) || (1==$r && 1== $c) || ($r > 1 && $c== 11 - $r) )
 					return true;
-								
+
 				return false;
 	}
 	foreach( range(1,10) as $k)
@@ -647,4 +610,15 @@ echo $out;exit;
 // 	echo view::instance()->render('factor_render.php','',$vm);
 // });
 
+
+
+$app->route("GET /service-unavailable", function($app, $params)
+{
+	// echo "test";
+	// exit;
+	header('HTTP/1.1 503 Service Temporarily Unavailable');
+	header('Status: 503 Service Temporarily Unavailable');
+	header('Retry-After: 3600');
+	// exit;
+});	
 $app->run();
